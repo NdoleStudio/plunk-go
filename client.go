@@ -6,27 +6,25 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"net/http"
-	"strconv"
 )
 
 type service struct {
 	client *Client
 }
 
-// Client is the campay API client.
-// Do not instantiate this client with Client{}. Use the New method instead.
+// Client is the plunk API client.
+// Do not instantiate this client with Client. Use the New method instead.
 type Client struct {
 	httpClient *http.Client
 	common     service
 	baseURL    string
-	delay      int
+	secretKey  string
 
-	Status *statusService
+	Contacts *contactService
 }
 
-// New creates and returns a new campay.Client from a slice of campay.ClientOption.
+// New creates and returns a new Client from a slice of Option.
 func New(options ...Option) *Client {
 	config := defaultClientConfig()
 
@@ -36,12 +34,12 @@ func New(options ...Option) *Client {
 
 	client := &Client{
 		httpClient: config.httpClient,
-		delay:      config.delay,
+		secretKey:  config.secretKey,
 		baseURL:    config.baseURL,
 	}
 
 	client.common.client = client
-	client.Status = (*statusService)(&client.common)
+	client.Contacts = (*contactService)(&client.common)
 	return client
 }
 
@@ -67,10 +65,7 @@ func (client *Client) newRequest(ctx context.Context, method, uri string, body i
 
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("Accept", "application/json")
-
-	if client.delay > 0 {
-		client.addURLParams(req, map[string]string{"sleep": strconv.Itoa(client.delay)})
-	}
+	req.Header.Set("Authorization", "Bearer "+client.secretKey)
 
 	return req, nil
 }
@@ -103,7 +98,7 @@ func (client *Client) do(req *http.Request) (*Response, error) {
 		return resp, err
 	}
 
-	_, err = io.Copy(ioutil.Discard, httpResponse.Body)
+	_, err = io.Copy(io.Discard, httpResponse.Body)
 	if err != nil {
 		return resp, err
 	}
@@ -120,7 +115,7 @@ func (client *Client) newResponse(httpResponse *http.Response) (*Response, error
 	resp := new(Response)
 	resp.HTTPResponse = httpResponse
 
-	buf, err := ioutil.ReadAll(resp.HTTPResponse.Body)
+	buf, err := io.ReadAll(resp.HTTPResponse.Body)
 	if err != nil {
 		return nil, err
 	}
