@@ -66,17 +66,15 @@ func TestContactService_CreateWithError(t *testing.T) {
 func TestContactService_Delete(t *testing.T) {
 	// Arrange
 	apiKey := "test-api-key"
-	server := helpers.MakeTestServer(http.StatusOK, stubs.ContactsDeleteResponse())
+	server := helpers.MakeTestServer(http.StatusNoContent, nil)
 	client := New(WithBaseURL(server.URL), WithSecretKey(apiKey))
 
 	// Act
-	contact, response, err := client.Contacts.Delete(context.Background(), "contact-id")
+	response, err := client.Contacts.Delete(context.Background(), "contact-id")
 
 	// Assert
 	assert.Nil(t, err)
-	assert.Equal(t, http.StatusOK, response.HTTPResponse.StatusCode)
-	jsonContent, _ := json.Marshal(contact)
-	assert.JSONEq(t, string(stubs.ContactsDeleteResponse()), string(jsonContent))
+	assert.Equal(t, http.StatusNoContent, response.HTTPResponse.StatusCode)
 
 	// Teardown
 	server.Close()
@@ -89,7 +87,7 @@ func TestContactService_DeleteWithError(t *testing.T) {
 	client := New(WithBaseURL(server.URL), WithSecretKey(apiKey))
 
 	// Act
-	_, response, err := client.Contacts.Delete(context.Background(), "contact-id")
+	response, err := client.Contacts.Delete(context.Background(), "contact-id")
 
 	// Assert
 	assert.NotNil(t, err)

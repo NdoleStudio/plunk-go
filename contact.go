@@ -29,25 +29,17 @@ type ContactListRequest struct {
 
 // ContactCreateResponse represents the response from creating or updating a contact
 type ContactCreateResponse struct {
-	Success bool    `json:"success"`
-	Data    Contact `json:"data"`
-}
-
-// ContactDeleteResponse represents the response from deleting a contact
-type ContactDeleteResponse struct {
-	Success bool `json:"success"`
-	Data    struct {
-		Message string `json:"message"`
-	} `json:"data"`
+	Contact
+	Meta struct {
+		IsNew    bool `json:"isNew"`
+		IsUpdate bool `json:"isUpdate"`
+	} `json:"_meta"`
 }
 
 // ContactListResponse represents the response from listing contacts
 type ContactListResponse struct {
-	Success bool `json:"success"`
-	Data    struct {
-		Items      []Contact `json:"items"`
-		NextCursor string    `json:"nextCursor"`
-		HasMore    bool      `json:"hasMore"`
-		Total      int       `json:"total"`
-	} `json:"data"`
+	Contacts   []Contact `json:"contacts"`
+	Total      int       `json:"total"`
+	HasMore    bool      `json:"hasMore"`
+	NextCursor *string   `json:"nextCursor"`
 }

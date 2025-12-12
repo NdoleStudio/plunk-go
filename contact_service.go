@@ -34,23 +34,18 @@ func (service *contactService) Create(ctx context.Context, params *ContactCreate
 // Delete a contact permanently by ID
 //
 // API Docs: https://next-wiki.useplunk.com/api-reference/contacts/deleteContact
-func (service *contactService) Delete(ctx context.Context, contactID string) (*ContactDeleteResponse, *Response, error) {
+func (service *contactService) Delete(ctx context.Context, contactID string) (*Response, error) {
 	request, err := service.client.newRequest(ctx, http.MethodDelete, "/contacts/"+contactID, nil)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 
 	response, err := service.client.do(request)
 	if err != nil {
-		return nil, response, err
+		return response, err
 	}
 
-	status := new(ContactDeleteResponse)
-	if err = json.Unmarshal(*response.Body, status); err != nil {
-		return nil, response, err
-	}
-
-	return status, response, nil
+	return response, nil
 }
 
 // List a paginated list of contacts with cursor-based pagination

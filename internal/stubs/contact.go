@@ -4,27 +4,20 @@ package stubs
 func ContactsCreateResponse() []byte {
 	return []byte(`
 {
-  "success": true,
-  "data": {
-    "id": "string",
-    "email": "user@example.com",
-    "subscribed": true,
-    "data": {},
-    "createdAt": "2019-08-24T14:15:22Z",
-    "updatedAt": "2019-08-24T14:15:22Z"
-  }
-}
-`)
-}
-
-// ContactsDeleteResponse returns a stubbed response for deleting a contact
-func ContactsDeleteResponse() []byte {
-	return []byte(`
-{
-  "success": true,
-  "data": {
-    "message": "string"
-  }
+	"id": "string",
+	"email": "user@example.com",
+	"subscribed": true,
+	"data": {
+		"firstName": "John",
+		"lastName": "Doe",
+		"plan": "premium"
+	},
+	"createdAt": "2019-08-24T14:15:22Z",
+	"updatedAt": "2019-08-24T14:15:22Z",
+	"_meta": {
+		"isNew":false,
+		"isUpdate":false
+	}
 }
 `)
 }
@@ -33,22 +26,23 @@ func ContactsDeleteResponse() []byte {
 func ContactsListResponse() []byte {
 	return []byte(`
 {
-  "success": true,
-  "data": {
-    "items": [
-      {
-        "id": "string",
-        "email": "user@example.com",
-        "subscribed": true,
-        "data": {},
-        "createdAt": "2019-08-24T14:15:22Z",
-        "updatedAt": "2019-08-24T14:15:22Z"
-      }
+  	"contacts": [
+		{
+			"id": "string",
+			"email": "user@example.com",
+			"subscribed": true,
+			"data": {
+				"firstName": "John",
+				"lastName": "Doe",
+				"plan": "premium"
+			},
+			"createdAt": "2019-08-24T14:15:22Z",
+			"updatedAt": "2019-08-24T14:15:22Z"
+		}
     ],
-    "nextCursor": "string",
-    "hasMore": true,
-    "total": 0
-  }
+    "nextCursor": null,
+    "hasMore": false,
+    "total": 1
 }
 `)
 }
