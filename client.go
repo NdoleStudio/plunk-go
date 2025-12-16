@@ -20,8 +20,10 @@ type Client struct {
 	common     service
 	baseURL    string
 	secretKey  string
+	publicKey  string
 
 	Contacts *contactService
+	Tracker  *trackerService
 }
 
 // New creates and returns a new Client from a slice of Option.
@@ -35,18 +37,20 @@ func New(options ...Option) *Client {
 	client := &Client{
 		httpClient: config.httpClient,
 		secretKey:  config.secretKey,
+		publicKey:  config.publicKey,
 		baseURL:    config.baseURL,
 	}
 
 	client.common.client = client
 	client.Contacts = (*contactService)(&client.common)
+	client.Tracker = (*trackerService)(&client.common)
 	return client
 }
 
 // newRequest creates an API request. A relative URL can be provided in uri,
 // in which case it is resolved relative to the BaseURL of the Client.
 // URI's should always be specified without a preceding slash.
-func (client *Client) newRequest(ctx context.Context, method, uri string, body interface{}) (*http.Request, error) {
+func (client *Client) newRequest(ctx context.Context, key, method, uri string, body any) (*http.Request, error) {
 	var buf io.ReadWriter
 	if body != nil {
 		buf = &bytes.Buffer{}
@@ -65,9 +69,17 @@ func (client *Client) newRequest(ctx context.Context, method, uri string, body i
 
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("Accept", "application/json")
-	req.Header.Set("Authorization", "Bearer "+client.secretKey)
+	req.Header.Set("Authorization", "Bearer "+key)
 
 	return req, nil
+}
+
+func (client *Client) newRequestWithSecretKey(ctx context.Context, method, uri string, body any) (*http.Request, error) {
+	return client.newRequest(ctx, client.secretKey, method, uri, body)
+}
+
+func (client *Client) newRequestWithPublicKey(ctx context.Context, method, uri string, body any) (*http.Request, error) {
+	return client.newRequest(ctx, client.publicKey, method, uri, body)
 }
 
 // addURLParams adds urls parameters to an *http.Request

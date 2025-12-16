@@ -13,7 +13,7 @@ type contactService service
 //
 // API Docs: https://next-wiki.useplunk.com/api-reference/contacts/createContact
 func (service *contactService) Create(ctx context.Context, params *ContactCreateRequest) (*ContactCreateResponse, *Response, error) {
-	request, err := service.client.newRequest(ctx, http.MethodPost, "/contacts", params)
+	request, err := service.client.newRequestWithSecretKey(ctx, http.MethodPost, "/contacts", params)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -35,7 +35,7 @@ func (service *contactService) Create(ctx context.Context, params *ContactCreate
 //
 // API Docs: https://next-wiki.useplunk.com/api-reference/contacts/deleteContact
 func (service *contactService) Delete(ctx context.Context, contactID string) (*Response, error) {
-	request, err := service.client.newRequest(ctx, http.MethodDelete, "/contacts/"+contactID, nil)
+	request, err := service.client.newRequestWithSecretKey(ctx, http.MethodDelete, "/contacts/"+contactID, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -52,7 +52,7 @@ func (service *contactService) Delete(ctx context.Context, contactID string) (*R
 //
 // API Docs: https://next-wiki.useplunk.com/api-reference/contacts/listContacts
 func (service *contactService) List(ctx context.Context, params map[string]string) (*ContactListResponse, *Response, error) {
-	request, err := service.client.newRequest(ctx, http.MethodGet, "/contacts", nil)
+	request, err := service.client.newRequestWithSecretKey(ctx, http.MethodGet, "/contacts", nil)
 	if err != nil {
 		return nil, nil, err
 	}

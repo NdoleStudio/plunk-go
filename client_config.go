@@ -5,6 +5,7 @@ import "net/http"
 type clientConfig struct {
 	httpClient *http.Client
 	secretKey  string
+	publicKey  string
 	baseURL    string
 }
 

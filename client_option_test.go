@@ -87,3 +87,20 @@ func TestWithSecretKey(t *testing.T) {
 		assert.Equal(t, key, config.secretKey)
 	})
 }
+
+func TestWithPublicKey(t *testing.T) {
+	t.Run("PublicKey is set successfully", func(t *testing.T) {
+		// Setup
+		t.Parallel()
+
+		// Arrange
+		config := defaultClientConfig()
+		key := "public-key123"
+
+		// Act
+		WithPublicKey(key).apply(config)
+
+		// Assert
+		assert.Equal(t, key, config.publicKey)
+	})
+}

@@ -41,3 +41,10 @@ func WithSecretKey(secretKey string) Option {
 		config.secretKey = secretKey
 	})
 }
+
+// WithPublicKey sets the public key for the public API authentication.
+func WithPublicKey(publicKey string) Option {
+	return clientOptionFunc(func(config *clientConfig) {
+		config.publicKey = publicKey
+	})
+}
