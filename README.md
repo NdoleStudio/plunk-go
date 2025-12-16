@@ -39,12 +39,12 @@ go get github.com/NdoleStudio/plunk-go
 
 ## Implemented
 
-- Contacts
-    - `POST /contacts`: Create a new contact or update existing (upsert by email)
-    - `DELETE /contacts/{id}`: Permanently delete a contact
-    - `GET /contacts`: Get a paginated list of contacts with cursor-based pagination
-- Track
-    - `POST /track`: Track an event for a contact
+- **Contacts**
+    - [x] `POST /contacts`: Create a new contact or update existing (upsert by email)
+    - [x] `DELETE /contacts/{id}`: Permanently delete a contact
+    - [x] `GET /contacts`: Get a paginated list of contacts with cursor-based pagination
+- **Track**
+    - [x] `POST /track`: Track an event for a contact
 
 ## Usage
 
