@@ -7,7 +7,8 @@ type Contact struct {
 	ID         string         `json:"id"`
 	Email      string         `json:"email"`
 	Subscribed bool           `json:"subscribed"`
-	Data       map[string]any `json:"data"`
+	ProjectID  string         `json:"projectId"`
+	Data       map[string]any `json:"data,omitempty"`
 	CreatedAt  time.Time      `json:"createdAt"`
 	UpdatedAt  time.Time      `json:"updatedAt"`
 }
@@ -38,7 +39,7 @@ type ContactCreateResponse struct {
 
 // ContactListResponse represents the response from listing contacts
 type ContactListResponse struct {
-	Contacts   []Contact `json:"contacts"`
+	Data       []Contact `json:"data"`
 	Total      int       `json:"total"`
 	HasMore    bool      `json:"hasMore"`
 	NextCursor *string   `json:"nextCursor"`
